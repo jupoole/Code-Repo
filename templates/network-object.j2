@@ -1,0 +1,8 @@
+{% if net_object is defined %}
+{% for name, val in net_object.items() %}
+object-group network {{ name }}
+{% for network in val['networks'] %}
+ network-object {{ network['subnet'] }} {{ network['mask'] }}
+{% endfor %}
+{% endfor %}
+{% endif %}

@@ -1,0 +1,24 @@
+---
+
+#net_object:
+#  DMZ_SUBNETS:
+#    networks:
+#      - subnet: "10.10.0.0"
+#        mask: "255.255.255.0"
+#      - subnet: "10.10.1.0"
+#        mask: "255.255.255.0"
+#     - subnet: "10.10.2.0"
+#       mask: "255.255.255.0"
+#service_objects:
+#  MGMT_PORTS:
+#    protocol: "tcp"
+#    ports:
+#      - type: 'match'
+#        port: '80'
+#      - type: 'range'
+#        port: '5301-5310'
+#  WEB_PORTS:
+#    protocol: "tcp"
+#    ports:
+#      - type: 'match'
+#        port: 'www'

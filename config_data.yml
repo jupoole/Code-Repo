@@ -1,0 +1,63 @@
+---
+
+  # The playbook defaults to not push any configuration, and you can use tags
+  # to only deploy pieces of the configuration
+  # ansible-playbook -i inventory config_data.yml --tags="network-object"
+  # ansible-playbook -i inventory -e "run_check_mode=false" config_data.yml
+
+  - name: "BUILD CONFIGURATION FROM TEMPLATE AND PUSH"
+    hosts: "all"
+    gather_facts: "no"
+
+    vars:
+      run_check_mode: True
+
+    tasks:
+
+    - name: "ENSURE FOLDER EXISTS"
+      file:
+        path: "config_data/{{ inventory_hostname }}"
+        state: "directory"
+
+    - name: "GENERATE CONFIGURATIONS VIA JINJA TEMPLATE"
+      template: 
+        src: "{{ item }}.j2"
+        dest: "config_data/{{ inventory_hostname }}/{{ item }}.cfg"
+      with_items:
+        - "network-object"
+        - "service-object"
+        - "acl"
+      tags:
+        - "network-object"
+        - "service-object"
+        - "acl"
+
+    - name: "PUSH NETWORK OBJECT CONFIGURATION"
+      asa_config:
+        src: "config_data/{{ inventory_hostname }}/network-object.cfg"
+      check_mode: "{{ run_check_mode }}"
+      tags:
+        - "network-object"
+
+    - name: "PUSH SERVICE OBJECT CONFIGURATION"
+      asa_config:
+        src: "config_data/{{ inventory_hostname }}/service-object.cfg"
+      check_mode: "{{ run_check_mode }}"
+      tags:
+        - "service-object"
+
+    - name: "PUSH ACL OBJECT CONFIGURATION"
+      asa_config:
+        src: "config_data/{{ inventory_hostname }}/acl.cfg"
+      check_mode: "{{ run_check_mode }}"
+      tags:
+        - "acl"
+
+    - name: "SAVE"
+      asa_config:
+        save: true
+      check_mode: "{{ run_check_mode }}"
+      tags:
+        - "network-object"
+        - "service-object"
+        - "acl"

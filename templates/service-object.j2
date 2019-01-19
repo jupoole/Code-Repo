@@ -1,0 +1,12 @@
+{% if service_objects is defined %}
+{% for key, values in service_objects.iteritems() %}
+object-group service {{ key }} {{ values['protocol'] }}
+{% for port in values.ports %}
+{% if port.get('type') == 'match' %}
+ port-object eq {{ port['port'] }}
+{% elif port['type'] == 'range' %}
+ port-object range {{ port['port'] | replace('-',' ') }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}

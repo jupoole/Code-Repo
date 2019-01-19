@@ -1,0 +1,4 @@
+{% for acl in access_list.elements %}
+access-list {{ access_list.name }} extended {{ acl.action }} {{ acl.protocol }} {{ acl.source }} {{ acl.destination }}{% if acl.get('port') %} {{ acl.port }}{% endif %}
+
+{% endfor %}
