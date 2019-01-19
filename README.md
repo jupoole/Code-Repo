@@ -1,1 +1,9 @@
-Code Repo
+This readme file provides the overview for this small code project. From the high level, the goal is to both pull data from a Cisco ASA and push configurations to an ASA depending on what you are trying to accomplish. This project is based on Ansible running two different playbooks. The operational_data.yml is designed to pull data from the ASA, such as ACL entries, routes etc. For this particular project, I am just pulling ACL configuration data to verify what is configured. In reality, the possibilities are close to infinite as to what data can be pulled from the device. For the purpose of this project, I chose to stick to ACL information. 
+
+The configuration_data.yml is designed to push configurations to the ASA. By default, the playbook will not push configs to the device. However, you can run the playbook with the “run_check_mode=false” option to push the config. The script is set to generate the configuration for review before actually pushing to the device. 
+
+For the purpose of this project, I configured the playbook to create a network object for DMZ_WEB_SERVERS along with a service object for the allowed web ports. I also setup the playbook to create/append to the ACL on the outside interface. 
+
+As it relates to the folder/file structure and dependencies. I added the ASA in the inventory file. The operational_data.yml file contains the configuration for the script, to include the “show commands”. The output from the  script is sent to the operational_data folder where the configuration data is stored. The configuration_data.yml includes the script information to build the config. I am also using JINJA templates, in the templates folder, to create the configurations. In this scenario, since I only have one device, I decided to put all config script inputs in host_vars vs. group_vars. 
+
+These playbooks were testing to pull ACL information along with push configs to the ASA to create the network/service objects and associated ACL. The video/WebEx recording will demonstrate this. 
